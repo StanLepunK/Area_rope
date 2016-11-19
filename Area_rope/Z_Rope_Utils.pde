@@ -38,27 +38,27 @@ boolean alpha_range(float min, float max, int colour) {
 }
 
 boolean red_range(float min, float max, int colour) {
-  float  r = alpha(colour) ;
+  float  r = red(colour) ;
   return in_range(min, max, r) ;
 }
 
 boolean green_range(float min, float max, int colour) {
-  float  g = alpha(colour) ;
+  float  g = green(colour) ;
   return in_range(min, max, g) ;
 }
 
 boolean blue_range(float min, float max, int colour) {
-  float  b = alpha(colour) ;
+  float  b = blue(colour) ;
   return in_range(min, max, b) ;
 }
 
 boolean saturation_range(float min, float max, int colour) {
-  float  s = alpha(colour) ;
+  float  s = saturation(colour) ;
   return in_range(min, max, s) ;
 }
 
 boolean brightness_range(float min, float max, int colour) {
-  float  b = alpha(colour) ;
+  float  b = brightness(colour) ;
   return in_range(min, max, b) ;
 }
 
