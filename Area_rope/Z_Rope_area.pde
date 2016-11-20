@@ -2,12 +2,12 @@
 Area_ROPE 0.0.1 
 Romanesco Processing Environment 2016–2016
 */
-boolean mirror_area = false ;
-void mirror(boolean mirror_aera) {
-  this.mirror_area = mirror_area ;
+boolean mirror_img = false ;
+void mirror(boolean mirror_img) {
+  this.mirror_img = mirror_img ;
 }
 
-
+/*
 ArrayList<Vec3> pix_list ;
 void bitmap_set_analyze() {
   pix_list = new ArrayList<Vec3>() ;
@@ -21,7 +21,7 @@ void bitmap_analyze(PImage img, int step_x, int step_y) {
   for(int x = 0 ;  x < img.width ; x = x + step_x) {
     for(int y = 0 ; y < img.height ; y = y + step_y) {
       // pixel position
-      if(!mirror_area) {
+      if(!mirror_img) {
         which_pix =  y*img.width +x; 
       } else {
         // Reversing x to mirror the image
@@ -35,7 +35,7 @@ void bitmap_analyze(PImage img, int step_x, int step_y) {
     }
   }
 }
-
+*/
 
 
 /**
@@ -51,9 +51,10 @@ final int BRIGHTNESS_SORT = 6 ;
 
 class Area {
   ArrayList<Colour_bag> palette ;
-  boolean mirror_image = false ;
+  
   Area (PImage img, int step, int num_bag, int type_sort) {
     palette = new ArrayList<Colour_bag>() ;
+    create_bag(num_bag, type_sort) ;
     analyze(img, step, step, num_bag, type_sort) ;
 
   }
@@ -63,31 +64,30 @@ class Area {
     return palette.size() ;
   }
   
+  Colour_bag get(int target) {
+    return palette.get(target) ;
+  }
+  
 
   // area img
   void analyze(PImage img, int step_x, int step_y, int num_bag, int type_sort) {
-    palette.clear() ;
     float [] colour_pointer = new float[num_bag] ;
     float range = range_size(num_bag, type_sort) ;
-
-    // check color ;
-    create_bag(num_bag, type_sort) ;
-
-
 
     for(int x = 0 ;  x < img.width ; x = x + step_x) {
       for(int y = 0 ; y < img.height ; y = y + step_y) {
         manage_bag(img, x, y, type_sort, range) ;
-         
       }
     }
   }
   
   // manage bag
+  int count  = 0 ;
   void manage_bag(PImage img, int x, int y, int type_sort, float range) {
+    count ++ ;
     int which_pix = 0 ;
     // pixel position
-    if(!mirror_image) {
+    if(!mirror_img) {
       which_pix =  y*img.width +x; 
     } else {
       // Reversing x to mirror the image
@@ -98,11 +98,12 @@ class Area {
     int c = img.get(x,y) ;
     // float colour_ID = select_component(c, type_sort) ;
     // println(match_bag(c, range_colour, type_sort), select_component(c, type_sort), range_colour, type_sort) ;
-    if(match_bag_bag) {
-        // add_colour_in_bag(x, y, c, range, type_sort) ;
+    if(match_bag(c, range, type_sort)) {
+        add_colour_in_bag(x, y, c, range, type_sort) ;
+        // println("current bag", count) ;
       } else {
         // create a new colour bag
-        println("new bag") ;
+        // println("new bag", count) ;
         // create_bag(x, y, c, type_sort) ;
       }
   }
@@ -112,9 +113,9 @@ class Area {
   void create_bag(int num, int type_sort) {
     float range =  range_size(num, type_sort) ;
     float colour_ID = range *.5 ;
-    for(int i = 0 ; i < bag.size() ; i++) {
+    for(int i = 0 ; i < num ; i++) {
       Colour_bag bag = new Colour_bag(colour_ID) ;
-      colour_ID + range ;
+      colour_ID += range ;
       palette.add(bag) ;
     }
   }
@@ -138,37 +139,30 @@ class Area {
 
         if(type_sort == ALPHA_SORT) {
           if(alpha_range(min, max, c)) {
-            Vec3 pix = Vec3(x,y,c) ; 
             bag.add(x,y,c) ;
           } 
         } else if(type_sort == RED_SORT) {
           if(red_range(min, max, c)) {
-            Vec3 pix = Vec3(x,y,c) ; 
             bag.add(x,y,c) ;
           } 
         } else if(type_sort == GREEN_SORT) {
-          if(green_range(min, max, c)) {
-            Vec3 pix = Vec3(x,y,c) ; 
+          if(green_range(min, max, c)) { 
             bag.add(x,y,c) ;
           } 
         } else if(type_sort == BLUE_SORT) { 
           if(blue_range(min, max, c)) {
-            Vec3 pix = Vec3(x,y,c) ; 
             bag.add(x,y,c) ;
           } 
         } else if(type_sort == HUE_SORT) {
           if(hue_range(min, max, c)) {
-            Vec3 pix = Vec3(x,y,c) ; 
             bag.add(x,y,c) ;
           } 
         } else if(type_sort == SATURATION_SORT) {
           if(saturation_range(min, max, c)) {
-            Vec3 pix = Vec3(x,y,c) ; 
             bag.add(x,y,c) ;
           } 
         } else if(type_sort == BRIGHTNESS_SORT) {
           if(brightness_range(min, max, c)) {
-            Vec3 pix = Vec3(x,y,c) ; 
             bag.add(x,y,c) ;
           } 
         } 
@@ -199,9 +193,6 @@ class Area {
           result = saturation_range(min, max, colour) ;
         } else if(type_sort == BRIGHTNESS_SORT) {
           result = brightness_range(min, max, colour) ;
-           println(result, palette.size(), bag.colour_ID, min, max, select_component(colour, type_sort)) ;
-              exit() ;
-             // println("je suis là") ;
         } else result = brightness_range(min, max, colour) ;
       }
     } else {
@@ -252,7 +243,23 @@ class Colour_bag {
   void add(int x, int y, int c) {
     bag.add(Vec3(x,y,c)) ;
   }
+  
+  int size() {
+    return bag.size() ;
+  }
+  
+  
+  Vec3 get(int target) {
+    Vec3 v = bag.get(target) ;
+    return v ;
+  }
+  Vec2 get_pos(int target) {
+    Vec3 v = bag.get(target) ;
+    return Vec2(v.x,v.y) ;
+  }
+  
+  int get_colour(int target) {
+    Vec3 v = bag.get(target) ;
+    return (int)v.z ;
+  }
 }
-
-
-

@@ -11,6 +11,7 @@ void setup() {
   int bags = 3 ;
   area = new Area(img, step, bags, BRIGHTNESS_SORT) ;
   println(area.size()) ;
+ 
 
   
 
@@ -19,15 +20,29 @@ void setup() {
 }
 
 void draw() {
+  for(int i = 0 ; i < area.size() ; i++) {
+   // println(area.get(i).colour_ID) ;
+   // println(area.get(i).size()) ;
+    int size_bag = area.get(i).size() ;
+    for(int k = 0 ; k < size_bag ; k++) {
+      int c = area.get(i).get_colour(k) ;
+      Vec2 pos = area.get(i).get_pos(k) ;
+      point(pos) ;
+      strokeWeight(2) ;
+      stroke(c) ;
+      
+    }  
+  }
 
   
-  background(0) ;
+  // background(0) ;
   // classic_grid_img() ; 
   
 }
 
 
 // CLASSIC
+/*
 void set_classic_grid_img(PImage img) {
     bitmap_set_analyze() ;
   int step_x = 10 ;
@@ -45,6 +60,5 @@ void classic_grid_img() {
     strokeWeight(10) ;
     point(pos) ;
   } 
-
 }
-
+*/
