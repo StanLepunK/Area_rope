@@ -1,5 +1,6 @@
 PImage img ;
 Area area ;
+
 void setup() {
   size(800,600) ;
   // img = loadImage("pirate.jpg") ;
@@ -8,7 +9,7 @@ void setup() {
   surface.setSize(img.width, img.height) ;
   
   int step = 5 ; 
-  int bags = 3 ;
+  int bags = 10 ;
   area = new Area(img, step, bags, BRIGHTNESS_SORT) ;
   println(area.size()) ;
 
