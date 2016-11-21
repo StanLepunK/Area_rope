@@ -3421,5 +3421,3 @@ void matrix_start() {
   pushMatrix() ;
   System.err.println("Deprecated method matrix_start() is deprecated instead use start_matrix()") ;
 }
-
-
