@@ -15,11 +15,11 @@ final int SATURATION_SORT = 5 ;
 final int BRIGHTNESS_SORT = 6 ;
 
 class Area {
-  ArrayList<Colour_bag> palette ;
+  ArrayList<Bag> palette ;
   boolean mirror_img = false ;
   
   Area (PImage img, int step, int num_bag, int type_sort) {
-    palette = new ArrayList<Colour_bag>() ;
+    palette = new ArrayList<Bag>() ;
     create_bag(num_bag, type_sort) ;
     analyze(img, step, step, num_bag, type_sort) ;
     int [] pixel_rank = classify_components(img, type_sort, num_bag) ;
@@ -31,7 +31,7 @@ class Area {
     return palette.size() ;
   }
   
-  private Colour_bag get(int target) {
+  private Bag get(int target) {
     return palette.get(target) ;
   }
   
@@ -63,36 +63,7 @@ class Area {
     }
     return best ;
   }
-  /*
-  private int[] best_components(int [] list, int num_bag) {
-    int [] best_component = new int[num_bag] ;
-    int [] best = new int[num_bag] ;
-    int [] score = new int[num_bag] ;
-    //int best = -1 ;
-    for(int i = 0 ; i < best.length ; i++) {
-      for(int k = 0 ; k < list.length ; k++) {
-        if(list[k] > score[i]) {
-          if(i > 0) {
-            int scoring = 0 ;
-            for(int m = i ; m > 0 ; m--) {
-              if(list[k] != score[m-1]) {
-                scoring++ ;
-              }
-            }
-            if(scoring >= i) {
-              best[i] = k ;
-              score[i] = list[k] ;
-            } 
-          } else { 
-            best[i] = k ; 
-            score[i] = list[k] ;
-          }     
-        }
-      }
-    }
-    return best ;
-  }
-  */
+
 
   private int[] classify_components(PImage img, int type_sort, int num_bag) {
     int [] components ;
@@ -100,7 +71,6 @@ class Area {
     
     int num = 1 ; 
     img.loadPixels() ;
-
 
     // ahpha
     if(type_sort == ALPHA_SORT) {
@@ -114,6 +84,7 @@ class Area {
         components[value] ++ ;
       }
       return components ;
+
     // red
     } else if(type_sort == RED_SORT) {
       num = (int)g.colorModeX  +1 ;
@@ -127,6 +98,7 @@ class Area {
         components[value] ++ ;
       }
       return components ; 
+
     // green
     } else if(type_sort == GREEN_SORT) {
       num = (int)g.colorModeY  +1 ;
@@ -139,6 +111,7 @@ class Area {
         components[value] ++ ;
       }
       return components ;
+
     // blue  
     } else if(type_sort == BLUE_SORT) {
       num = (int)g.colorModeZ +1 ;
@@ -151,6 +124,7 @@ class Area {
         components[value] ++ ;
       }
       return components ;
+
     // hue  
     } else if(type_sort == HUE_SORT) {
       num = (int)g.colorModeX  +1 ;
@@ -163,6 +137,7 @@ class Area {
         components[value] ++ ;
       }
       return components ;
+
     // hue  
     } else if(type_sort == SATURATION_SORT) {
       num = (int)g.colorModeY  +1 ;
@@ -175,6 +150,7 @@ class Area {
         components[value] ++ ;
       }
       return components ;
+
     // brightness  
     } else if(type_sort == BRIGHTNESS_SORT) {
       num = (int)g.colorModeZ +1 ;
@@ -239,7 +215,7 @@ class Area {
     float range =  range_size(num, type_sort) ;
     float colour_ID = range *.5 ;
     for(int i = 0 ; i < num ; i++) {
-      Colour_bag bag = new Colour_bag(colour_ID) ;
+      Bag bag = new Bag(colour_ID) ;
       colour_ID += range ;
       palette.add(bag) ;
     }
@@ -250,7 +226,7 @@ class Area {
   //add color in a specific bag
   private void add_colour_in_bag(int x, int y, int c, float range, int type_sort) {
     if(palette.size() > 0) {
-      for(Colour_bag bag : palette) {
+      for(Bag bag : palette) {
         float min = bag.colour_ID - (range *.5) ;
         float max = bag.colour_ID + (range *.5) ;
 
@@ -291,7 +267,7 @@ class Area {
   private boolean match_bag(int colour, float range, int type_sort) {
     boolean result = false ;
     if(palette.size() > 0) {
-      for(Colour_bag bag : palette) {
+      for(Bag bag : palette) {
         
         float min = bag.colour_ID - (range *.5) ;
         float max = bag.colour_ID + (range *.5) ;
@@ -343,11 +319,11 @@ class Area {
 
 
   // internal class
-  private class Colour_bag {
+  private class Bag {
     ArrayList<Vec3> bag ;
     float colour_ID ;
 
-    private Colour_bag(float colour_ID) {
+    private Bag(float colour_ID) {
       this.colour_ID = colour_ID ;
       bag = new ArrayList<Vec3>()  ;
     }
@@ -357,22 +333,22 @@ class Area {
       bag.add(Vec3(x,y,c)) ;
     }
     
-    private int size() {
+    public int size() {
       return bag.size() ;
     }
     
     
-    private Vec3 get(int target) {
+    public Vec3 get(int target) {
       Vec3 v = bag.get(target) ;
       return v ;
     }
     
-    private Vec2 get_pos(int target) {
+    public Vec2 get_pos(int target) {
       Vec3 v = bag.get(target) ;
       return Vec2(v.x,v.y) ;
     }
     
-    private int get_colour(int target) {
+    public int get_colour(int target) {
       Vec3 v = bag.get(target) ;
       return (int)v.z ;
     }

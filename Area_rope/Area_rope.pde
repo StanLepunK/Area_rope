@@ -30,44 +30,36 @@ void setup() {
 float rotation ;
 void draw() {
 
-
-
-
   background_rope(0) ;
-  /*
+  simple_display() ;
+  // by_bag() ;
+  // by_pixel() ;
+  curve_info() ;
+}
+
+// simple
+void simple_display() {
+  println(mouseX, mouseY) ;
   for(int i = 0 ; i < area.size() ; i++) {
     int size_bag = area.get(i).size() ;
-    for(int k = 0 ; k < size_bag ; k++) 
+    for(int k = 0 ; k < size_bag ; k++) {
       int c = area.get(i).get_colour(k) ;
       Vec2 pos = area.get(i).get_pos(k) ;
+      int size = 5 ;
+      if((int)pos.x > mouseX - step && (int)pos.x < mouseX + step  && (int)pos.y > mouseY - step && (int)pos.y < mouseY + step) {
+        size = 15 ;
+        println("je suis là") ;
+
+      }
       point(pos) ;
-      strokeWeight(2) ;
-      stroke(c) ;
+      strokeWeight(size) ;
+      stroke(c, 50) ;
       
     }  
   } 
-  */
-  by_bag() ;
-  // by_pixel() ;
-  curve() ;
 }
 
-void curve() {
-  stroke(0, 25) ;
-  strokeWeight(1) ;
-  int [] pix_num = area.classify_components(img, BRIGHTNESS_SORT, bags) ;
-  int pos_x = width /10  ;
-  int pos_y = height/2 ;
-  for(int i = 0 ; i < pix_num.length ; i++) {
-    float x_1 = pos_x + i;
-    float x_2 = pos_x + i;
-    float y_1 = pos_y;
-    float y_2 = pos_y - ((float)pix_num[i] *.01);
-    line(x_1, y_1, x_2, y_2) ;
-  }
-
-}
-
+// bag
 void by_bag() {
   rotation += .1 ;
   int speed = 1 ;
@@ -108,4 +100,22 @@ void by_pixel() {
     // costume_rope(pos, size, rotation, shape) ;
   }
 
+}
+
+
+
+
+void curve_info() {
+  stroke(0, 126) ;
+  strokeWeight(1) ;
+  int [] pix_num = area.classify_components(img, BRIGHTNESS_SORT, bags) ;
+  int pos_x = width /10  ;
+  int pos_y = height/2 ;
+  for(int i = 0 ; i < pix_num.length ; i++) {
+    float x_1 = pos_x + i;
+    float x_2 = pos_x + i;
+    float y_1 = pos_y;
+    float y_2 = pos_y - ((float)pix_num[i] *.01);
+    line(x_1, y_1, x_2, y_2) ;
+  }
 }
