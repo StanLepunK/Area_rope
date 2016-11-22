@@ -1,17 +1,27 @@
 PImage img ;
 Area area ;
+  int step = 5 ; 
+  int bags = 12 ;
 
 void setup() {
   size(800,600) ;
-  // img = loadImage("pirate.jpg") ;
-  img = loadImage("purosGirl.jpg") ;
+  //img = loadImage("pirate.jpg") ;
+  // img = loadImage("purosGirl.jpg") ;
+  img = loadImage("Lena_Soderberg.jpg") ;
+  // img = loadImage("mire.jpg") ;
+  // img = loadImage("no_future.jpg") ;
+  // img = loadImage("Liberte.jpg") ;
+  // img = loadImage("RioCarnaval.jpg") ;
+  // img = loadImage("Joconde.jpg") ;
+
   
   surface.setSize(img.width, img.height) ;
   
-  int step = 5 ; 
-  int bags = 10 ;
-  area = new Area(img, step, bags, BRIGHTNESS_SORT) ;
-  println(area.size()) ;
+
+  area = new Area(img, step, bags, RED_SORT) ;
+
+
+
 
    
 }
@@ -19,11 +29,15 @@ void setup() {
 
 float rotation ;
 void draw() {
-  // background_rope(0, 5) ;
+
+
+
+
+  background_rope(0) ;
   /*
   for(int i = 0 ; i < area.size() ; i++) {
     int size_bag = area.get(i).size() ;
-    for(int k = 0 ; k < size_bag ; k++) {
+    for(int k = 0 ; k < size_bag ; k++) 
       int c = area.get(i).get_colour(k) ;
       Vec2 pos = area.get(i).get_pos(k) ;
       point(pos) ;
@@ -33,7 +47,53 @@ void draw() {
     }  
   } 
   */
+  by_bag() ;
+  // by_pixel() ;
+  curve() ;
+}
+
+void curve() {
+  stroke(0, 25) ;
+  strokeWeight(1) ;
+  int [] pix_num = area.classify_components(img, BRIGHTNESS_SORT, bags) ;
+  int pos_x = width /10  ;
+  int pos_y = height/2 ;
+  for(int i = 0 ; i < pix_num.length ; i++) {
+    float x_1 = pos_x + i;
+    float x_2 = pos_x + i;
+    float y_1 = pos_y;
+    float y_2 = pos_y - ((float)pix_num[i] *.01);
+    line(x_1, y_1, x_2, y_2) ;
+  }
+
+}
+
+void by_bag() {
   rotation += .1 ;
+  int speed = 1 ;
+  for(int i = 0 ; i < speed ; i ++) {
+    int which_bag = floor(random(area.size())) ;
+    int size_bag = floor(area.get(which_bag).size()) ;
+    for(int k = 0 ; k < size_bag ; k++ ) {
+      int c =  area.get(which_bag).get_colour(k) ;
+      Vec2 pos = area.get(which_bag).get_pos(k) ;
+      fill(c) ;
+      noStroke() ;
+      int size = (int)random(5,10) ;
+      int shape = (int)random(4, 10) ;
+      costume_rope(pos, size, rotation, TRIANGLE_ROPE) ;
+      // costume_rope(pos, size, rotation, shape) ;
+    }
+  }
+}
+
+
+
+
+
+
+void by_pixel() {
+    rotation += .1 ;
   int speed = 40 ;
   for(int i = 0 ; i < speed ; i ++) {
     int which_bag = floor(random(area.size())) ;
@@ -42,9 +102,10 @@ void draw() {
     Vec2 pos = area.get(which_bag).get_pos(which_pix) ;
     fill(c, 50) ;
     noStroke() ;
-    int size = (int)random(5,35) ;
-    int shape = (int)random(13, 22) ;
-    // costume_rope(pos, size, rotation, TRIANGLE_ROPE) ;
-    costume_rope(pos, size, rotation, shape) ;
+    int size = (int)random(5,10) ;
+    int shape = (int)random(4, 10) ;
+    costume_rope(pos, size, rotation, TRIANGLE_ROPE) ;
+    // costume_rope(pos, size, rotation, shape) ;
   }
+
 }

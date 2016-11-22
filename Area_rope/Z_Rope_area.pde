@@ -23,11 +23,7 @@ class Area {
     create_bag(num_bag, type_sort) ;
     analyze(img, step, step, num_bag, type_sort) ;
     int [] pixel_rank = classify_components(img, type_sort, num_bag) ;
-    println("rank") ;
-    printArray(pixel_rank) ;
     int [] best_pixel = best_components(pixel_rank, num_bag) ;
-    println("best") ;
-    printArray(best_pixel) ;
   }
 
   // 
@@ -45,6 +41,29 @@ class Area {
   }
   
   // find the component
+  private int[] best_components(int [] list, int num_bag) {
+    int [] best_component = new int[num_bag] ;
+    int [] best = new int[num_bag] ;
+    boolean [] forbiden = new boolean[list.length] ;
+    //int best = -1 ;
+    for(int i = 0 ; i < best.length ; i++) {
+      for(int k = 0 ; k < list.length ; k++) {
+        if(!forbiden[k] && list[k] > best[i]) {
+          best[i] = k ; 
+        }
+      }
+      // forbiden zone, may be with HUE analyze it's possible to need something more sophisticated, for a wheel analyze.
+      int start = best[i] - (num_bag *2) ;
+      if(start <= 0) start = 0 ;
+      int end = best[i] + (num_bag *2) ;
+      if (end >= list.length) end = list.length ;
+      for(int m = start ; m < end ; m++) {
+        forbiden[m] = true ;
+      }
+    }
+    return best ;
+  }
+  /*
   private int[] best_components(int [] list, int num_bag) {
     int [] best_component = new int[num_bag] ;
     int [] best = new int[num_bag] ;
@@ -72,9 +91,8 @@ class Area {
       }
     }
     return best ;
-    
-
   }
+  */
 
   private int[] classify_components(PImage img, int type_sort, int num_bag) {
     int [] components ;
@@ -86,7 +104,7 @@ class Area {
 
     // ahpha
     if(type_sort == ALPHA_SORT) {
-      num = (int)g.colorModeA ;
+      num = (int)g.colorModeA  +1 ;
       components = new int[minimum_components(num, num_bag)] ;
       for(int i = 0 ; i < components.length ; i++) {
         components[i] = 0 ;
@@ -98,8 +116,9 @@ class Area {
       return components ;
     // red
     } else if(type_sort == RED_SORT) {
-      num = (int)g.colorModeX ;
+      num = (int)g.colorModeX  +1 ;
       components = new int[minimum_components(num, num_bag)] ;
+      println("length", components.length) ;
       for(int i = 0 ; i < components.length ; i++) {
         components[i] = 0 ; 
       }
@@ -110,7 +129,7 @@ class Area {
       return components ; 
     // green
     } else if(type_sort == GREEN_SORT) {
-      num = (int)g.colorModeY ;
+      num = (int)g.colorModeY  +1 ;
       components = new int[minimum_components(num, num_bag)] ;
       for(int i = 0 ; i < components.length ; i++) {
         components[i] = 0 ; 
@@ -122,7 +141,7 @@ class Area {
       return components ;
     // blue  
     } else if(type_sort == BLUE_SORT) {
-      num = (int)g.colorModeZ ;
+      num = (int)g.colorModeZ +1 ;
       components = new int[minimum_components(num, num_bag)] ;
       for(int i = 0 ; i < components.length ; i++) {
         components[i] = 0 ; 
@@ -134,7 +153,7 @@ class Area {
       return components ;
     // hue  
     } else if(type_sort == HUE_SORT) {
-      num = (int)g.colorModeX ;
+      num = (int)g.colorModeX  +1 ;
       components = new int[minimum_components(num, num_bag)] ;
       for(int i = 0 ; i < components.length ; i++) {
         components[i] = 0 ; 
@@ -146,7 +165,7 @@ class Area {
       return components ;
     // hue  
     } else if(type_sort == SATURATION_SORT) {
-      num = (int)g.colorModeY ;
+      num = (int)g.colorModeY  +1 ;
       components = new int[minimum_components(num, num_bag)] ;
       for(int i = 0 ; i < components.length ; i++) {
         components[i] = 0 ; 
@@ -358,8 +377,6 @@ class Area {
       return (int)v.z ;
     }
   }
-
-
 }
 
 
