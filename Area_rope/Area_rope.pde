@@ -7,11 +7,11 @@ void setup() {
   size(800,600) ;
   //img = loadImage("pirate.jpg") ;
   // img = loadImage("purosGirl.jpg") ;
-  img = loadImage("Lena_Soderberg.jpg") ;
+  // img = loadImage("Lena_Soderberg.jpg") ;
   // img = loadImage("mire.jpg") ;
   // img = loadImage("no_future.jpg") ;
   // img = loadImage("Liberte.jpg") ;
-  // img = loadImage("RioCarnaval.jpg") ;
+  img = loadImage("RioCarnaval.jpg") ;
   // img = loadImage("Joconde.jpg") ;
 
   
@@ -39,22 +39,15 @@ void draw() {
 
 // simple
 void simple_display() {
-  println(mouseX, mouseY) ;
   for(int i = 0 ; i < area.size() ; i++) {
     int size_bag = area.get(i).size() ;
     for(int k = 0 ; k < size_bag ; k++) {
       int c = area.get(i).get_colour(k) ;
       Vec2 pos = area.get(i).get_pos(k) ;
       int size = 5 ;
-      if((int)pos.x > mouseX - step && (int)pos.x < mouseX + step  && (int)pos.y > mouseY - step && (int)pos.y < mouseY + step) {
-        size = 15 ;
-        println("je suis là") ;
-
-      }
       point(pos) ;
       strokeWeight(size) ;
-      stroke(c, 50) ;
-      
+      stroke(c, 50) ;     
     }  
   } 
 }

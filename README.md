@@ -15,13 +15,19 @@ Area your_obj = new Area(area = new Area(PImage img, int step, int num_bags, int
 >img is your img from Processing
 >step it's your step grid
 >num_bags, the quantity of diffenrents group of components Processing must split your picture.
-> for the type you can use the constants :
+>for the type you can use the constants :
 >final int ALPHA_SORT = 0 ;
+
 >final int RED_SORT = 1 ;
+
 >final int GREEN_SORT = 2 ;
+
 >final int BLUE_SORT = 3 ;
+
 >final int HUE_SORT = 4 ;
+
 >final int SATURATION_SORT = 5 ;
+
 >final int BRIGHTNESS_SORT = 6 ;
 
 
