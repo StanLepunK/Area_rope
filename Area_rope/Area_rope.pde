@@ -1,7 +1,13 @@
+/**
+AREA ROPE
+* @see https://github.com/StanLepunK/Rope_examples
+2018-2019
+*/
+
 PImage img ;
 Area area ;
-  int step = 5 ; 
-  int bags = 12 ;
+int step = 5 ; 
+int bags = 12 ;
 
 void setup() {
   size(800,600) ;
@@ -13,17 +19,9 @@ void setup() {
   // img = loadImage("Liberte.jpg") ;
   img = loadImage("RioCarnaval.jpg") ;
   // img = loadImage("Joconde.jpg") ;
-
-  
   surface.setSize(img.width, img.height) ;
-  
-
   area = new Area(img, step, bags, RED_SORT) ;
-
-
-
-
-   
+ 
 }
 
 
@@ -43,7 +41,7 @@ void simple_display() {
     int size_bag = area.get(i).size() ;
     for(int k = 0 ; k < size_bag ; k++) {
       int c = area.get(i).get_colour(k) ;
-      Vec2 pos = area.get(i).get_pos(k) ;
+      vec2 pos = area.get(i).get_pos(k) ;
       int size = 5 ;
       point(pos) ;
       strokeWeight(size) ;
@@ -61,12 +59,12 @@ void by_bag() {
     int size_bag = floor(area.get(which_bag).size()) ;
     for(int k = 0 ; k < size_bag ; k++ ) {
       int c =  area.get(which_bag).get_colour(k) ;
-      Vec2 pos = area.get(which_bag).get_pos(k) ;
+      vec2 pos = area.get(which_bag).get_pos(k) ;
       fill(c) ;
       noStroke() ;
       int size = (int)random(5,10) ;
       int shape = (int)random(4, 10) ;
-      costume_rope(pos, size, rotation, TRIANGLE_ROPE) ;
+      costume(pos,vec2(size), rotation, TRIANGLE_ROPE) ;
       // costume_rope(pos, size, rotation, shape) ;
     }
   }
@@ -84,12 +82,12 @@ void by_pixel() {
     int which_bag = floor(random(area.size())) ;
     int which_pix = floor(random(area.get(which_bag).size())) ;
     int c =  area.get(which_bag).get_colour(which_pix) ;
-    Vec2 pos = area.get(which_bag).get_pos(which_pix) ;
+    vec2 pos = area.get(which_bag).get_pos(which_pix) ;
     fill(c, 50) ;
     noStroke() ;
     int size = (int)random(5,10) ;
     int shape = (int)random(4, 10) ;
-    costume_rope(pos, size, rotation, TRIANGLE_ROPE) ;
+    costume(pos,vec2(size), rotation, TRIANGLE_ROPE) ;
     // costume_rope(pos, size, rotation, shape) ;
   }
 
